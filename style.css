@@ -1,0 +1,123 @@
+.red{
+  width:100px;
+  height: 50px;
+  margin-top:10px;
+  background-color: red;
+}
+.green{
+  width:100px;
+  height: 50px;
+  margin-top:10px;
+  background-color: green;
+}
+.blue{
+  width:100px;
+  height: 50px;
+  margin-top:10px;
+  background-color: blue;
+}
+
+.active{
+  background-color: aqua;
+}
+
+
+.seats {
+  display: flex;
+  flex-wrap: wrap;
+  /* border: 1px solid gray;
+  padding: 3px; */
+  margin-top: 11px;
+}
+
+.seat {
+  margin: 4px;
+  border: 1px solid gray;
+  padding: 3px;
+  min-height: 11px;
+  cursor: pointer;
+  font-size: 15px;
+  width: 28px;
+}
+
+.seat--sold {
+  background-color: red;
+  color: #fff;
+}
+
+.seat--booked {
+  background-color: gray;
+}
+
+.seat--selected {
+  background-color: #00ff00;
+}
+
+.seat:hover {
+  font-weight: bold;
+}
+
+.seat:nth-child(4n -2) {
+  margin-right: 12px;
+}
+
+.seat:nth-child(4n -1) {
+  margin-left: 12px;
+}
+
+.bus__door {
+  width: 66px;
+  border: 1px solid gray;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bus__driver {
+  width: 66px;
+  border: 1px solid gray;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.seat:nth-child(4n -2) {
+  margin-right: 25px;
+}
+
+.seat:nth-child(4n -1) {
+  margin-left: 25px;
+}
+
+.confirm-button {
+  border: 1px solid blue;
+  background-color: #006ea2;
+  color: #fff;
+  cursor: pointer;
+  padding: 9px 44px;
+  width: 100%;
+  margin: 0;
+  margin-top: 11px;
+}
+
+.confirm-button__disabled {
+  opacity: 0.4;
+}
+
+.confirmed-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  padding: 33px;
+}
+
+.confirmed-dialog h3 {
+  color: green;
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app" class="max-w-7xl mx-auto py-20">
+
+
+      <div class="bg-gray-200 p-10">
+        <h1 class="text-center text-3xl font-semibold">Ticket Booking App</h1>
+
+        <div class="bg-gray-300 w-2/3 mx-auto p-10 mt-10">
+          <div class="flex gap-10">
+            <div v-for="(value,key) in seatStates" class="flex gap-3">
+              <div class="px-5 py-3" :style="{background: value.color}"></div>
+              <p class="font-semibold">{{value.text}}</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-10 mt-5">
+
+            <div class=" border border-gray-600 p-[10px] w-[320px]">
+
+              <div class="flex justify-between items-center px-1">
+                <div class="w-[120px] text-center py-1 border border-gray-500">Door</div>
+                <div class="w-[120px] text-center py-1 border border-gray-500">Driver</div>
+              </div>
+
+
+              <div class="flex flex-wrap  mt-5">
+                <div v-for="(seat,i) in seats" :key="i" @click="handleClick(i)" :class="{
+                          'seat--sold' : seat.type === 'sold',
+                          'seat--booked' : seat.type === 'booked',
+                          'seat--selected' : seat.type === 'selected',
+                        }" class="w-[55px] seat text-center py-1 border border-gray-500 cursor-pointer">
+                  {{seat.name}}
+                </div>
+              </div>
+
+
+
+            </div>
+
+            <div>
+            
+                <div v-if="selectedSeat.length === 0"  class="flex h-full items-center justify-center">
+                  <h1>No Seat Selected</h1>
+                </div>
+
+                <div v-else >
+                   <strong>Selected Seats</strong>
+                   <table class="min-w-full border divide-y divide-gray-200">
+                    <thead class="bg-gray-500">
+                    <tr>
+                      <th scope="col" class="border px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Seat</th>
+                      <th scope="col" class="border px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody  class="bg-white divide-y divide-gray-200">
+                      <tr v-for="seat in selectedSeat" >
+                        <td  class="border px-6 py-2 whitespace-nowrap">{{seat.name}}</td>
+                        <td  class="border px-6 py-2 whitespace-nowrap">TK. {{seat.price}}</td>
+                      </tr>
+
+                      <tr v-if="appliedCoupon !== null">
+                        <th class="border px-6 py-2 whitespace-nowrap text-left">Discount</th>
+                        <th class="border px-6 py-2 whitespace-nowrap text-left">TK. - {{appliedCoupon.discount}}</th>
+                      </tr>
+                      <tr>
+                        <th class="border px-6 py-2 whitespace-nowrap text-left">Total</th>
+                        <th class="border px-6 py-2 whitespace-nowrap text-left">TK. {{totalCost}}</th>
+                      </tr>
+                    </tbody>
+                   </table>
+
+                   <div v-if="appliedCoupon === null" class="flex justify-between my-5">
+                    <h1>Have a Coupon?</h1>
+                    <input type="text" placeholder="10 Digit Code" class="px-3 border border-black" v-model="couponCode">
+                   </div>
+
+                   <div v-else class="my-5">
+                          Applied Coupon: {{appliedCoupon.code}}
+                   </div>
+
+                   <div>
+                    <input class="w-full px-5 py-1 my-1" type="text" placeholder="Name" v-model="name">
+                    <input class="w-full px-5 py-1 my-1" type="text" placeholder="Mobile" v-model="mobile">
+
+                    <button onclick="my_modal_1.showModal()" @click="confirm" class="px-5 py-1 text-white bg-green-500">Confirm</button>
+                   
+                 
+                    <dialog id="my_modal_1" class="modal">
+                      <div class="modal-box">
+                        <h3 class="text-green-500 text-center pb-2 text-2xl font-semibold border-b border-dashed">Ticket confirmed!</h3>
+              
+                        <div class="modal-action">
+          <hr>
+          <br>
+          <table class="min-w-full border">
+            <tr>
+              <th scope="col" class="border px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Passenger Name</th>
+            <td>{{name}}</td>
+            <tr>
+              <th scope="col" class="border px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Passenger Contact</th>
+            <td>{{mobile}}</td>
+            
+            </tr>
+            <tr>
+              <th scope="col" class="border px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Seats:</th>
+              <td>
+                <div v-for="(seat, i) in selectedSeats" :key="seat.name">
+                  <div>
+                    {{seat.name}}
+                  </div>
+
+                </div>
+              </td>
+
+             
+            </tr>
+            <tr>
+              <th  scope="col" class="border px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Total Cost</th>
+              <td  scope="col" class="border px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Tk. {{totalCost}}</td>
+            </tr>
+
+          </table>
+
+          <br>
+                            <!-- if there is a button in form, it will close the modal -->
+                            <button @click="resetdata" class="btn">Book Again</button>
+                        
+                        </div>
+                      </div>
+                    </dialog>
+                  
+                  
+                  </div>
+
+                </div>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <script src="./ticket-booking.js"></script>
+  </body>
+
+</html>
